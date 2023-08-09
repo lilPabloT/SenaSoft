@@ -9,7 +9,13 @@
     </v-expansion-panels>
 
     <v-dialog v-model="tablaActualizacionConfirmada">
-      
+        <v-alert class="pa-5" type="success" width="max-content">
+          <v-alert-title> ¡Actualizado! </v-alert-title>
+          El registro se ha actualizado correctamente
+          <br>
+          <br>
+          <v-btn @click="tablaActualizacionConfirmada = false"> Cerrar </v-btn>
+        </v-alert>
     </v-dialog>
   </div>
 
@@ -85,6 +91,8 @@
 
           })
 
+          // Volver a pintar la pagina despues del put
+
           setTimeout(() => {
 
             fetch("http://127.0.0.1:8000/api/tareas/")
@@ -92,6 +100,8 @@
               .then(data => {store.tareas = data.reverse()})
 
           },500)
+
+          tablaActualizacionConfirmada.value = true
 
         }  
 

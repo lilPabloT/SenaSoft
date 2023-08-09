@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <div style="background: #0af">
-      <h1 class="text-center text-h1 my-15 text-white"> To do list </h1>
-      <v-main style="display: flex; justify-content:space-evenly; width:100%; height:95vh">
+      <h1 class="text-center text-h1 my-10 text-white"> To do list </h1>
+      <v-main style="display: flex; justify-content:space-evenly; width:100%; height:85vh">
         <HelloWorld />
         <Post />
       </v-main>

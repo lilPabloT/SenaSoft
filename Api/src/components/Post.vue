@@ -13,6 +13,16 @@
         </v-text-field>
 
         <v-btn @click="post"> Crear tarea </v-btn>
+
+        <v-dialog v-model="postEnviado">
+            <v-alert style="margin: auto; width: max-content" class="pa-5" type="success">
+              <v-alert-title> Enviado! </v-alert-title>
+              El registro se ha enviado correctamente
+              <br>
+              <br>
+              <v-btn @click="postEnviado = false"> Cerrar </v-btn>
+            </v-alert>
+        </v-dialog>
     </div>
 </template>
 
@@ -37,7 +47,6 @@
                 // Cuadro de confirmacion cuando se ejecute la funcion
 
                 postEnviado: false,
-                postError: false
 
             })
 
@@ -60,6 +69,8 @@
                         .then(data => {store.tareas = data.reverse()})
 
                 }, 500)
+
+                variablesPost.postEnviado = true
 
             }
 
