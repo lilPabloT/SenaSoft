@@ -2,19 +2,21 @@
   <div style="width: 45%; height:100%; overflow:auto; display:flex; align-content:center; flex-direction:column;">
     <v-expansion-panels style="width: 80%; padding:20px" v-for="(tarea, i) in store.tareas" :key="i">
       <v-expansion-panel
-        :title=tarea.titulo
-        :text=" tarea.texto + ', Estado de la tarea: '  + tarea.estado ">
-        <v-btn class="ma-5" @click="actualizarTarea(tarea.id)"> Actualizar tarea </v-btn>
+        :title="tarea.titulo.toUpperCase()"
+        :text=" 'RESUMEN: ' + tarea.texto"
+        style="pa-5">
+        <p class="ml-5 my-3"> Estado de la tarea: {{ tarea.estado }} </p>
+        <v-btn v-if="tarea.estado != 'Completada'" class="ma-5 bg-green" @click="actualizarTarea(tarea.id)"> Actualizar tarea </v-btn>
       </v-expansion-panel>
     </v-expansion-panels>
 
     <v-dialog v-model="tablaActualizacionConfirmada">
-        <v-alert class="pa-5" type="success" width="max-content">
+        <v-alert style="margin: auto; width: max-content" class="pa-5" type="success">
           <v-alert-title> ¡Actualizado! </v-alert-title>
           El registro se ha actualizado correctamente
           <br>
           <br>
-          <v-btn @click="tablaActualizacionConfirmada = false"> Cerrar </v-btn>
+          <v-btn class="text-black" @click="tablaActualizacionConfirmada = false"> Cerrar </v-btn>
         </v-alert>
     </v-dialog>
   </div>
@@ -63,47 +65,42 @@
         if (tareaSeleccionada.estado == "Pendiente"){
 
           fetch(`http://127.0.0.1:8000/api/tareas/${id}/`, {
-
-            method: 'PUT',
-            headers: {"content-type" : "application/json"},
-            body: JSON.stringify({
-              titulo: tareaSeleccionada.titulo,
-              texto: tareaSeleccionada.texto,
-              estado: "En ejecucion"
-            })
-
+              method: "PUT",
+              headers: {"content-type" : "application/json"},
+              body: JSON.stringify({
+                  "titulo" : tareaSeleccionada.titulo,
+                  "texto" : tareaSeleccionada.texto,
+                  "estado" : 'En ejecucion'
+              })
           })
 
-        }
-
-        // Realizar put para actualizar de pendiente a completada
-
-        else{
+        }else{
 
           fetch(`http://127.0.0.1:8000/api/tareas/${id}/`,{
             method: 'PUT',
             headers: {"content-type" : "application/json"},
             body: JSON.stringify({
-              titulo: tareaSeleccionada.titulo,
-              texto: tareaSeleccionada.texto,
-              estado: "Completada"
+              "id" : tareaSeleccionada.id,
+              "titulo" : tareaSeleccionada.titulo,
+              "texto" : tareaSeleccionada.texto,
+              "estado" : "Completada"
             })
 
           })
 
           // Volver a pintar la pagina despues del put
 
-          setTimeout(() => {
-
-            fetch("http://127.0.0.1:8000/api/tareas/")
-              .then(res => res.json())
-              .then(data => {store.tareas = data.reverse()})
-
-          },500)
-
-          tablaActualizacionConfirmada.value = true
-
         }  
+
+        setTimeout(() => {
+
+          fetch("http://127.0.0.1:8000/api/tareas/")
+            .then(res => res.json())
+            .then(data => {store.tareas = data.reverse()})
+
+        },500)
+
+        tablaActualizacionConfirmada.value = true
 
       }
 

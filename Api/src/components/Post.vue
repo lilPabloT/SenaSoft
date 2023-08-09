@@ -20,7 +20,7 @@
               El registro se ha enviado correctamente
               <br>
               <br>
-              <v-btn @click="postEnviado = false"> Cerrar </v-btn>
+              <v-btn class="text-black" @click="postEnviado = false"> Cerrar </v-btn>
             </v-alert>
         </v-dialog>
     </div>
@@ -53,11 +53,11 @@
             function post(){
 
                 fetch("http://127.0.0.1:8000/api/tareas/", {
-                    method: 'POST',
+                    method: "POST",
                     body: JSON.stringify({
-                        titulo: variablesPost.titulo,
-                        texto: variablesPost.texto,
-                        estado: 'Pendiente'
+                        "titulo" : variablesPost.titulo,
+                        "texto" : variablesPost.texto,
+                        "estado" : 'Pendiente'
                     }),
                     headers: {"Content-type" : "application/json"}
                 })
